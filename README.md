@@ -1,1 +1,0 @@
-🎨 ComicCraft AI — Create unique comic stories, characters, dialogues, and visuals with the power of Generative AI.
