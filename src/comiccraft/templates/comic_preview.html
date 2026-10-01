@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ff">
+  <title>Your comic - ComicCraft</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/comic.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/" aria-label="ComicCraft home">
+      <span class="wordmark-icon" aria-hidden="true">C</span>
+      <span>ComicCraft</span>
+    </a>
+    <span class="header-note">YOUR COMIC / 5 PANELS</span>
+  </header>
+
+  <main class="preview-main">
+    <section class="preview-heading" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Completed: Your comic is ready!</p>
+        <h1 id="page-title">{{ user_input.character_name }}'s story</h1>
+        <p class="intro-copy">{{ user_input.story_prompt }}</p>
+      </div>
+      <div class="preview-actions">
+        <a class="back-link secondary-action" href="/">Create another comic <span aria-hidden="true">&#8594;</span></a>
+        <a class="back-link primary-action" href="{{ download_url }}" download="{{ download_filename }}" data-pdf-download data-success-url="{{ success_url }}">Download PDF <span aria-hidden="true">&#8595;</span></a>
+      </div>
+      <p id="pdf-download-status" role="status" aria-live="polite" hidden></p>
+    </section>
+
+    <section class="comic-grid" aria-label="Five comic panels">
+      {% for panel in panels %}
+      <article class="comic-panel" aria-labelledby="panel-title-{{ panel.panel_number }}">
+        <header class="comic-panel-header">
+          <span class="panel-number">PANEL {{ '%02d'|format(panel.panel_number) }}</span>
+          <h2 id="panel-title-{{ panel.panel_number }}">{{ panel.title }}</h2>
+        </header>
+        <img class="comic-image" src="{{ panel.image_url }}" alt="Illustration for panel {{ panel.panel_number }}: {{ panel.scene_description }}" loading="lazy">
+        <p class="scene-description">{{ panel.scene_description }}</p>
+        <div class="story-copy">
+          <h3>Narration</h3>
+          <p>{{ panel.narration }}</p>
+          <h3>Dialogue</h3>
+          {% if panel.dialogue %}
+          <ul class="dialogue-list">
+            {% for line in panel.dialogue %}
+            <li><strong>{{ line.character }}:</strong> {{ line.line }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="quiet-copy">No dialogue in this panel.</p>
+          {% endif %}
+        </div>
+        <details class="prompt-reference">
+          <summary>Image prompt reference</summary>
+          <p>{{ panel.image_generation_prompt }}</p>
+        </details>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>COMICCRAFT</span>
+    <a href="/">NEW STORY <span aria-hidden="true">&#8599;</span></a>
+  </footer>
+  <script src="{{ url_for('static', path='/js/comic-export.js') }}" defer></script>
+</body>
+</html>

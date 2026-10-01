@@ -1,0 +1,1 @@
+"""ComicCraft web application."""

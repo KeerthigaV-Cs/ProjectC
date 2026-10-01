@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ff">
+  <title>Export complete - ComicCraft</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/comic.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/" aria-label="ComicCraft home">
+      <span class="wordmark-icon" aria-hidden="true">C</span>
+      <span>ComicCraft</span>
+    </a>
+    <span class="header-note">PDF EXPORT / COMPLETE</span>
+  </header>
+
+  <main class="success-main">
+    <section class="success-card" aria-labelledby="page-title">
+      <div class="success-illustration" aria-hidden="true">
+        <span class="success-check">&#10003;</span>
+        <span class="pdf-sheet"><span>PDF</span><i></i><i></i><i></i></span>
+      </div>
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> EXPORT COMPLETE</p>
+      <h1 id="page-title">Comic exported successfully!</h1>
+      <p class="success-copy">Your five-panel comic is ready to keep or share. The PDF download has started: <strong>{{ filename }}</strong></p>
+      <div class="success-actions">
+        <a class="back-link primary-action" href="{{ download_url }}" download>
+          Download PDF <span aria-hidden="true">&#8595;</span><span class="visually-hidden">Download again</span>
+        </a>
+        <a class="back-link secondary-action" href="/">Create another comic <span aria-hidden="true">&#8594;</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>COMICCRAFT</span>
+    <a href="/">NEW STORY <span aria-hidden="true">&#8599;</span></a>
+  </footer>
+</body>
+</html>

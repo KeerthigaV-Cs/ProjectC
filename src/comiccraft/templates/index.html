@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5ff">
+  <title>Create a comic - ComicCraft</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/comic.css') }}">
+  <script src="{{ url_for('static', path='/js/comic-form.js') }}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="/" aria-label="ComicCraft home">
+      <span class="wordmark-icon" aria-hidden="true">C</span>
+      <span>ComicCraft</span>
+    </a>
+    <a class="header-action" href="#comic-form">Start creating</a>
+  </header>
+
+  <main class="studio-main">
+    <section class="form-panel" aria-labelledby="page-title">
+      <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> YOUR AI COMIC STUDIO</p>
+      <h1 id="page-title">Turn your idea into a comic.</h1>
+      <p class="intro-copy">Shape a quick story and watch ComicCraft bring it to life as a personalized five-panel comic.</p>
+      {% if error_message %}
+      <div class="error-banner" role="alert">{{ error_message }}</div>
+      {% endif %}
+
+      <form action="/generate/progress" method="post" id="comic-form">
+        <div class="field">
+          <label for="story-prompt">Story prompt</label>
+          <textarea id="story-prompt" name="story_prompt" rows="4" maxlength="2000" required aria-invalid="{{ 'true' if field_errors.get('story_prompt') else 'false' }}" aria-describedby="story-prompt-error">{{ form_data.get('story_prompt', '') }}</textarea>
+          {% if field_errors.get('story_prompt') %}<p class="field-error" id="story-prompt-error">{{ field_errors.get('story_prompt') }}</p>{% endif %}
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="character-name">Main character</label>
+            <input id="character-name" name="character_name" type="text" maxlength="80" value="{{ form_data.get('character_name', '') }}" required aria-invalid="{{ 'true' if field_errors.get('character_name') else 'false' }}" aria-describedby="character-name-error">
+            {% if field_errors.get('character_name') %}<p class="field-error" id="character-name-error">{{ field_errors.get('character_name') }}</p>{% endif %}
+          </div>
+          <div class="field">
+            <label for="setting">Setting</label>
+            <div class="combo-field">
+              <input id="setting" class="combo-input" name="setting" type="text" maxlength="120" value="{{ form_data.get('setting', '') }}" required role="combobox" aria-autocomplete="list" aria-controls="setting-options" aria-expanded="false" aria-invalid="{{ 'true' if field_errors.get('setting') else 'false' }}" aria-describedby="setting-error" autocomplete="off">
+              <button class="combo-toggle" type="button" aria-label="Show all setting options" aria-controls="setting-options" aria-expanded="false"><span class="combo-chevron" aria-hidden="true"></span></button>
+              <ul class="combo-options" id="setting-options" role="listbox" hidden>
+                <li id="setting-option-0" role="option" data-value="Enchanted forest">Enchanted forest</li>
+                <li id="setting-option-1" role="option" data-value="Space station">Space station</li>
+                <li id="setting-option-2" role="option" data-value="Coastal town">Coastal town</li>
+                <li id="setting-option-3" role="option" data-value="Mountain village">Mountain village</li>
+              </ul>
+            </div>
+            {% if field_errors.get('setting') %}<p class="field-error" id="setting-error">{{ field_errors.get('setting') }}</p>{% endif %}
+          </div>
+          <div class="field">
+            <label for="tone">Story tone</label>
+            <div class="combo-field">
+              <input id="tone" class="combo-input" name="tone" type="text" maxlength="80" value="{{ form_data.get('tone', '') }}" required role="combobox" aria-autocomplete="list" aria-controls="tone-options" aria-expanded="false" aria-invalid="{{ 'true' if field_errors.get('tone') else 'false' }}" aria-describedby="tone-error" autocomplete="off">
+              <button class="combo-toggle" type="button" aria-label="Show all story tone options" aria-controls="tone-options" aria-expanded="false"><span class="combo-chevron" aria-hidden="true"></span></button>
+              <ul class="combo-options" id="tone-options" role="listbox" hidden>
+                <li id="tone-option-0" role="option" data-value="Whimsical">Whimsical</li>
+                <li id="tone-option-1" role="option" data-value="Funny">Funny</li>
+                <li id="tone-option-2" role="option" data-value="Dramatic">Dramatic</li>
+                <li id="tone-option-3" role="option" data-value="Adventurous">Adventurous</li>
+              </ul>
+            </div>
+            {% if field_errors.get('tone') %}<p class="field-error" id="tone-error">{{ field_errors.get('tone') }}</p>{% endif %}
+          </div>
+          <div class="field">
+            <label for="art-style">Art style</label>
+            <div class="combo-field">
+              <input id="art-style" class="combo-input" name="art_style" type="text" maxlength="80" value="{{ form_data.get('art_style', '') }}" required role="combobox" aria-autocomplete="list" aria-controls="art-style-options" aria-expanded="false" aria-invalid="{{ 'true' if field_errors.get('art_style') else 'false' }}" aria-describedby="art-style-error" autocomplete="off">
+              <button class="combo-toggle" type="button" aria-label="Show all art style options" aria-controls="art-style-options" aria-expanded="false"><span class="combo-chevron" aria-hidden="true"></span></button>
+              <ul class="combo-options" id="art-style-options" role="listbox" hidden>
+                <li id="art-style-option-0" role="option" data-value="Pixel art">Pixel art</li>
+                <li id="art-style-option-1" role="option" data-value="Bold ink comic">Bold ink comic</li>
+                <li id="art-style-option-2" role="option" data-value="Anime">Anime</li>
+                <li id="art-style-option-3" role="option" data-value="Watercolor comic">Watercolor comic</li>
+              </ul>
+            </div>
+            {% if field_errors.get('art_style') %}<p class="field-error" id="art-style-error">{{ field_errors.get('art_style') }}</p>{% endif %}
+          </div>
+        </div>
+
+        <button class="generate-button" type="submit">
+          <span class="generate-button-copy">
+            <span class="generate-button-label" aria-live="polite" aria-atomic="true">Generate comic</span>
+            <span class="generate-button-dots" aria-hidden="true" hidden></span>
+          </span>
+        </button>
+      </form>
+    </section>
+
+    <aside class="preview-card" aria-label="Comic preview, five panels">
+      <div class="preview-card-top">
+        <span class="ai-badge"><span aria-hidden="true">&#10022;</span> AI POWERED</span>
+        <span class="preview-count">5 PANELS</span>
+      </div>
+      <div class="preview-artwork" aria-hidden="true">
+        <span class="art-spark art-spark-one">&#10022;</span>
+        <span class="art-spark art-spark-two">&#10022;</span>
+        <span class="art-sun"></span>
+        <span class="art-orbit"></span>
+        <span class="art-character">C</span>
+        <span class="art-caption">A little imagination<br>goes a long way.</span>
+      </div>
+      <div class="preview-story">
+        <div>
+          <p class="preview-overline">YOUR STORY</p>
+          <h2>One idea.<br>Five big moments.</h2>
+        </div>
+        <span class="preview-story-mark" aria-hidden="true">&#8599;</span>
+      </div>
+      <div class="preview-mini-panels" aria-label="Five story panels">
+        <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <span>COMICCRAFT</span>
+    <a href="/health">SYSTEM STATUS <span aria-hidden="true">&#8599;</span></a>
+  </footer>
+</body>
+</html>
